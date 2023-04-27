@@ -3,7 +3,7 @@ import java.util.Date;
 import java.util.List;
 
 public class RentalStore {
-    private List<Item> availableItems;//stores the available movies in the system
+    private List<Item> availableItems;//stores the available items in the system
     private List<Customer> registeredCustomers;//stores the registered users
 
     public RentalStore() {
@@ -16,23 +16,23 @@ public class RentalStore {
     }
 
     public void addItem(Item item) {
-        availableItems.add(item);//adds a movie to the system
+        availableItems.add(item);//adds a item to the system
     }
 
     public void removeItem(Item item) {
-        availableItems.remove(item);//removes a movie from the system
+        availableItems.remove(item);//removes a item from the system
     }
 
     public List<Item> getAvailableItems() {
-        return availableItems;//returns available movies
+        return availableItems;//returns available items
     }
 
-    public void rentMovie(Item item, Customer customer) {
-        if(!item.isAvailable()){//check if the movie is available
+    public void rentitem(Item item, Customer customer) {
+        if(!item.isAvailable()){//check if the item is available
             return;
         }
 
-        //adds movieId and customerId || Example = 543 + 324 => rentalId = 543324
+        //adds itemId and customerId || Example = 543 + 324 => rentalId = 543324
         Integer rentalID = (item.getID()*((int) Math.pow(10, customer.getID().toString().length()))) + customer.getID();
         ////////////////////////////////
 

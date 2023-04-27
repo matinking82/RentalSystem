@@ -6,7 +6,7 @@ public class Customer {
     private String email;
     private String phoneNumber;
     private String address;
-    private List<Rental> rentals;//stores customers rented movies
+    private List<Rental> rentals;//stores customers rented items
 
     public Customer(String name, String email, String phoneNumber, String address, Integer Id) {
         ID = Id;
