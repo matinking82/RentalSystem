@@ -10,4 +10,12 @@ public class Book extends Item {
         this.author = author;
         this.publisher = publisher;
     }    
+   
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
 }
