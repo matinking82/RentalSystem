@@ -44,7 +44,6 @@ public class RentalStore {
 
     public void returnItem(Rental rental) {
 
-        rental.getCustomer().getRentals().remove(rental);
         rental.setReturnDate(new Date());
         rental.getItem().setAvailable(true);
         addItem(rental.getItem());
