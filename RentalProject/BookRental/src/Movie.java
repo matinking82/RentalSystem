@@ -4,9 +4,9 @@ public class Movie extends Item{
     private String director;
     private String cast;
 
-    public Movie(String title, String genre, String director, String cast, Date releaseDate, Integer ID) {
+    public Movie(String title, String genre, String director, String cast, Date releaseDate, Integer ID, RentalStore rentalStore) {
         
-        super(ID, title, genre, releaseDate);
+        super(ID, title, genre, releaseDate,rentalStore);
 
         this.director = director;
         this.cast = cast;
