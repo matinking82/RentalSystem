@@ -6,17 +6,17 @@ public class Item {
     private String genre;
     private Date releaseDate;
     private boolean available;
+    private RentalStore rentalStore;
 
-
-    public Item(Integer iD, String title, String genre, Date releaseDate) {
+    public Item(Integer iD, String title, String genre, Date releaseDate, RentalStore rentalStore) {
         ID = iD;
         this.title = title;
         this.genre = genre;
         this.releaseDate = releaseDate;
+        this.rentalStore = rentalStore;
         available = true;
     }
 
-    
     public Integer getID() {
         return ID;
     }
@@ -37,15 +37,24 @@ public class Item {
         return available;
     }
 
-    public void setAvailable(boolean status){
+    public void setAvailable(boolean status) {
         available = status;
     }
 
-    public void rentItem(){
-        //test
+    public void rentItem(Customer customer) {
+        rentalStore.rentitem(this, customer);
     }
 
-    public void retutnItem(){
-        //test
+    public void retutnItem(Customer customer) {
+        Rental rental = new Rental(0, null, null);
+
+        for (Rental r : customer.getRentals()) {
+            if (r.getItem().getID() == this.ID) {
+                rental = r;
+                break;
+            }
+        }
+
+        rentalStore.returnItem(rental);
     }
 }
