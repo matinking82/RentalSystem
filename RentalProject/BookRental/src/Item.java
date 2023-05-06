@@ -46,15 +46,13 @@ public class Item {
     }
 
     public void retutnItem(Customer customer) {
-        Rental rental = new Rental(0, null, null);
 
-        for (Rental r : customer.getRentals()) {
-            if (r.getItem().getID() == this.ID) {
-                rental = r;
+        for (Rental rental : customer.getRentals()) {
+            if (rental.getItem().getID() == this.ID) {
+                rentalStore.returnItem(rental);
                 break;
             }
         }
 
-        rentalStore.returnItem(rental);
     }
 }
