@@ -14,6 +14,7 @@ public class Customer {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.rentals = new ArrayList<Rental>();
     }
 
     public Integer getID() {
