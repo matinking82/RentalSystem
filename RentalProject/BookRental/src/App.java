@@ -11,7 +11,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(
-                "C:\\Users\\matin\\Desktop\\APP\\RentalSystem\\RentalProject\\BookRental\\src\\TestYourFork.json"));
+                "TestYourFork.json"));
         ;
         JSONArray books = (JSONArray) jsonObject.get("books");
         JSONArray games = (JSONArray) jsonObject.get("games");
