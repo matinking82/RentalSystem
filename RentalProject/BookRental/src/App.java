@@ -1,4 +1,5 @@
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -18,21 +19,21 @@ public class App {
         JSONArray movies = (JSONArray) jsonObject.get("movies");
         JSONArray customers = (JSONArray) jsonObject.get("customers");
 
-
         ArrayList<Item> items = new ArrayList<>();
         ArrayList<Customer> allCustomers = new ArrayList<>();
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         for (int i = 0; i < books.size(); i++) {
             JSONObject obj = (JSONObject) (books.get(i));
 
-            String[] date = ((String) (obj.get("releaseDate"))).split("-");
+            String date = ((String) (obj.get("releaseDate")));
 
             Book newBook = new Book(
                     (int) ((long) (obj.get("id"))),
                     (String) obj.get("title"),
                     (String) obj.get("genre"),
-                    new Date(),
+                    dateFormat.parse(date),
                     (String) obj.get("writer"),
                     (String) obj.get("publisher"),
                     rentalStore);
@@ -45,13 +46,13 @@ public class App {
         for (int i = 0; i < games.size(); i++) {
             JSONObject obj = (JSONObject) (games.get(i));
 
-            String[] date = ((String) (obj.get("releaseDate"))).split("-");
+            String date = ((String) (obj.get("releaseDate")));
 
             Game newGame = new Game(
                     (int) ((long) (obj.get("id"))),
                     (String) obj.get("title"),
                     (String) obj.get("genre"),
-                    new Date(),
+                    dateFormat.parse(date),
                     null,
                     (String) obj.get("manufacturer"),
                     rentalStore);
@@ -64,14 +65,14 @@ public class App {
         for (int i = 0; i < movies.size(); i++) {
             JSONObject obj = (JSONObject) (movies.get(i));
 
-            String[] date = ((String) (obj.get("releaseDate"))).split("-");
+            String date = ((String) (obj.get("releaseDate")));
 
             Movie newMovie = new Movie(
                     (String) obj.get("title"),
                     (String) obj.get("genre"),
                     (String) obj.get("director"),
                     (String) obj.get("cast"),
-                    new Date(),
+                    dateFormat.parse(date),
                     (int) ((long) (obj.get("id"))),
                     rentalStore);
 
@@ -85,12 +86,11 @@ public class App {
             JSONObject obj = (JSONObject) (customers.get(i));
 
             Customer newCustomer = new Customer(
-                    (String)obj.get("name"),
-                    (String)obj.get("email"),
-                    (String)obj.get("phone"),
-                    (String)obj.get("address"),
-                    (int)((long)obj.get("id"))
-            );
+                    (String) obj.get("name"),
+                    (String) obj.get("email"),
+                    (String) obj.get("phone"),
+                    (String) obj.get("address"),
+                    (int) ((long) obj.get("id")));
             rentalStore.register(newCustomer);
             allCustomers.add(newCustomer);
         }
