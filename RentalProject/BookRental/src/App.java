@@ -1,100 +1,70 @@
-import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.Date;
-
-import org.json.simple.*;
-import org.json.simple.parser.*;
 
 public class App {
     private static RentalStore rentalStore = new RentalStore();
 
-    public static void main(String[] args) throws Exception {
-        JSONParser parser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(
-                "C:\\Users\\matin\\Desktop\\APP\\RentalSystem\\RentalProject\\BookRental\\src\\TestYourFork.json"));
-        ;
-        JSONArray books = (JSONArray) jsonObject.get("books");
-        JSONArray games = (JSONArray) jsonObject.get("games");
-        JSONArray movies = (JSONArray) jsonObject.get("movies");
-        JSONArray customers = (JSONArray) jsonObject.get("customers");
+    public static void main(String[] args) {
+        JsonTester tester = new JsonTester(
+                "C:\\Users\\matin\\Desktop\\APP\\RentalSystem\\RentalProject\\BookRental\\src\\TestYourFork.json",
+                rentalStore);
 
+        Book book = new Book(100, "null", "null", new Date(), "null", "null", rentalStore);
+        Game game = new Game(100, "null", "null", new Date(), "null", "null", rentalStore);
+        Movie movie = new Movie("100", "null", "null", "null", new Date(), 100, rentalStore);
 
-        ArrayList<Item> items = new ArrayList<>();
-        ArrayList<Customer> allCustomers = new ArrayList<>();
+        Customer customer = new Customer("null", "null", "null", "null", 100);
+        book.setAvailable(false);
+        game.setAvailable(false);
+        movie.setAvailable(false);
+        try {
+            // test customer
+            tester.addCustomer(customer);
+            var test = tester.getAllCustomers();
+            customer.setEmail("horror");
+            tester.updateCustomer(customer.getID(), customer);
+            test = tester.getAllCustomers();
+            var t = tester.getCustomerById(100);
+            tester.removeCustomer(100);
+            test = tester.getAllCustomers();
 
+            // test movie
 
-        for (int i = 0; i < books.size(); i++) {
-            JSONObject obj = (JSONObject) (books.get(i));
+            tester.addMovie(movie);
+            var test2 = tester.getAllMovies();
+            movie.setAvailable(true);
+            movie.setGenre("horror");
+            tester.updateMovie(movie.getID(), movie);
+            test2 = tester.getAllMovies();
+            var t2 = tester.getMovieById(100);
+            tester.removeMovie(100);
+            test2 = tester.getAllMovies();
 
-            String[] date = ((String) (obj.get("releaseDate"))).split("-");
+            // test game
+            //
+            tester.addGame(game);
+            var test3 = tester.getAllGames();
+            game.setAvailable(true);
+            game.setGenre("horror");
+            tester.updateGame(game.getID(), game);
+            test3 = tester.getAllGames();
+            var t3 = tester.getGameById(100);
+            tester.removeGame(100);
+            test3 = tester.getAllGames();
 
-            Book newBook = new Book(
-                    (int) ((long) (obj.get("id"))),
-                    (String) obj.get("title"),
-                    (String) obj.get("genre"),
-                    new Date(),
-                    (String) obj.get("writer"),
-                    (String) obj.get("publisher"),
-                    rentalStore);
+            // test book
+            tester.addBook(book);
+            var test4 = tester.getAllBooks();
+            book.setAvailable(true);
+            book.setGenre("horror");
+            tester.updateBook(book.getID(), book);
+            test4 = tester.getAllBooks();
+            var t4 = tester.getBookById(100);
+            tester.removeBook(100);
+            test4 = tester.getAllBooks();
 
-            newBook.setAvailable((boolean) obj.get("isAvailable"));
-
-            rentalStore.addItem(newBook);
-            items.add(newBook);
+            System.out.println();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        for (int i = 0; i < games.size(); i++) {
-            JSONObject obj = (JSONObject) (games.get(i));
-
-            String[] date = ((String) (obj.get("releaseDate"))).split("-");
-
-            Game newGame = new Game(
-                    (int) ((long) (obj.get("id"))),
-                    (String) obj.get("title"),
-                    (String) obj.get("genre"),
-                    new Date(),
-                    null,
-                    (String) obj.get("manufacturer"),
-                    rentalStore);
-
-            newGame.setAvailable((boolean) obj.get("isAvailable"));
-
-            rentalStore.addItem(newGame);
-            items.add(newGame);
-        }
-        for (int i = 0; i < movies.size(); i++) {
-            JSONObject obj = (JSONObject) (movies.get(i));
-
-            String[] date = ((String) (obj.get("releaseDate"))).split("-");
-
-            Movie newMovie = new Movie(
-                    (String) obj.get("title"),
-                    (String) obj.get("genre"),
-                    (String) obj.get("director"),
-                    (String) obj.get("cast"),
-                    new Date(),
-                    (int) ((long) (obj.get("id"))),
-                    rentalStore);
-
-            newMovie.setAvailable((boolean) obj.get("isAvailable"));
-
-            rentalStore.addItem(newMovie);
-            items.add(newMovie);
-        }
-
-        for (int i = 0; i < customers.size(); i++) {
-            JSONObject obj = (JSONObject) (customers.get(i));
-
-            Customer newCustomer = new Customer(
-                    (String)obj.get("name"),
-                    (String)obj.get("email"),
-                    (String)obj.get("phone"),
-                    (String)obj.get("address"),
-                    (int)((long)obj.get("id"))
-            );
-            rentalStore.register(newCustomer);
-            allCustomers.add(newCustomer);
-        }
-        System.out.println("finished");
-
     }
 }
