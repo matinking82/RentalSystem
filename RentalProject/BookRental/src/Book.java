@@ -18,4 +18,14 @@ public class Book extends Item {
     public String getPublisher() {
         return publisher;
     }
+    
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
 }

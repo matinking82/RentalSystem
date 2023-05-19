@@ -20,5 +20,12 @@ public class Movie extends Item{
         return cast;
     }
 
-    
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+
+    public void setCast(String cast) {
+        this.cast = cast;
+    }
 }
