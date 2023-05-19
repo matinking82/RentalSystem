@@ -36,7 +36,7 @@ public class RentalStore {
         Integer rentalID = (item.getID()*((int) Math.pow(10, customer.getID().toString().length()))) + customer.getID();
         ////////////////////////////////
 
-        Rental newRenatl = new Rental(rentalID, item, customer);
+        Rental newRenatl = new Rental(rentalID, item, customer.getID());
         item.setAvailable(false);
         removeItem(item);
         customer.getRentals().add(newRenatl);

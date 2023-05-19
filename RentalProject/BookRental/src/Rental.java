@@ -3,15 +3,15 @@ import java.util.Date;
 public class Rental {
     private Integer ID;//unique id
     private Item rentedItem;
-    private Customer customer;
+    private Integer customerId;
     private Date rentalDate;//stores the time that the Item rented
     private Date returnDate;
 
 
-    public Rental(Integer iD, Item rentedItem, Customer customer) {
+    public Rental(Integer iD, Item rentedItem, Integer customerId) {
         ID = iD;
         this.rentedItem = rentedItem;
-        this.customer = customer;
+        this.customerId = customerId;
         rentalDate = new Date();
     }
 
@@ -23,8 +23,8 @@ public class Rental {
         return rentedItem;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Integer getCustomer() {
+        return customerId;
     }
 
     public Date getRentalDate() {
