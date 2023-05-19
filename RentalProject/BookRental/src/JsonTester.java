@@ -21,6 +21,61 @@ public class JsonTester {
         this.rentalStore = rentalStore;
     }
 
+    public void addItem(Item item) {
+        if (item instanceof Book) {
+            addBook((Book) item);
+        } else if (item instanceof Game) {
+            addGame((Game) item);
+        } else if (item instanceof Movie) {
+            addMovie((Movie) item);
+        } else {
+            throw new IllegalArgumentException("Unsupported item type");
+        }
+    }
+
+    public void removeItem(Item item) {
+        if (item instanceof Book) {
+            removeBook(item.getID());
+        } else if (item instanceof Game) {
+            removeGame(item.getID());
+        } else if (item instanceof Movie) {
+            removeMovie(item.getID());
+        } else {
+            throw new IllegalArgumentException("Unsupported item type");
+        }
+    }
+
+    public void updateItem(Item item) {
+        if (item instanceof Book) {
+            updateBook(item.getID(), (Book) item);
+        } else if (item instanceof Game) {
+            updateGame(item.getID(), (Game) item);
+        } else if (item instanceof Movie) {
+            updateMovie(item.getID(), (Movie) item);
+        } else {
+            throw new IllegalArgumentException("Unsupported item type");
+        }
+    }
+
+    public List<Item> getAllItems() {
+        List<Item> items = new ArrayList<>();
+        items.addAll(getAllBooks());
+        items.addAll(getAllGames());
+        items.addAll(getAllMovies());
+        return items;
+    }
+
+    public Item getItemById(int id) {
+        Item item = getBookById(id);
+        if (item == null) {
+            item = getGameById(id);
+        }
+        if (item == null) {
+            item = getMovieById(id);
+        }
+        return item;
+    }
+
     public void addBook(Book book) {
         JSONObject jsonObject = readJsonFile();
         JSONArray books = (JSONArray) jsonObject.get("books");
@@ -418,33 +473,63 @@ public class JsonTester {
     private JSONObject rentalToJsonObject(Rental rental) {
         JSONObject obj = new JSONObject();
         obj.put("ID", rental.getID());
-        obj.put("customer", customerToJsonObject(rental.getCustomer()));
+        obj.put("customerId", rental.getCustomer());
+
+        if (rental.getItem() instanceof Book) {
+            obj.put("item", bookToJsonObject((Book) rental.getItem()));
+            obj.put("itemType", "book");
+        } else if (rental.getItem() instanceof Game) {
+            obj.put("item", gameToJsonObject((Game) rental.getItem()));
+            obj.put("itemType", "game");
+        } else if (rental.getItem() instanceof Movie) {
+            obj.put("item", movieToJsonObject((Movie) rental.getItem()));
+            obj.put("itemType", "movie");
+        }
+
         obj.put("rentalDate", dateFormat.format(rental.getRentalDate()));
+
         if (rental.getReturnDate() != null) {
             obj.put("returnDate", dateFormat.format(rental.getReturnDate()));
+        } else {
+            obj.put("returnDate", null);
         }
+
         return obj;
     }
 
     private Rental jsonObjectToRental(JSONObject obj) {
         Integer ID = ((Long) obj.get("ID")).intValue();
-        Customer customer = jsonObjectToCustomer((JSONObject) obj.get("customer"));
+        int customerId = ((Long) obj.get("customerId")).intValue();
         Date rentalDate = null;
+        Item item = null;
+
+        switch ((String) obj.get("itemType")) {
+            case "book":
+                item = (jsonObjectToBook((JSONObject) obj.get("item")));
+                break;
+            case "game":
+                item = (jsonObjectToGame((JSONObject) obj.get("item")));
+
+                break;
+            case "movie":
+                item = (jsonObjectToMovie((JSONObject) obj.get("item")));
+                break;
+            default:
+                break;
+        }
+
         try {
             rentalDate = dateFormat.parse((String) obj.get("rentalDate"));
         } catch (java.text.ParseException e) {
-            e.printStackTrace();
         }
 
-        Rental rental = new Rental(ID, null, customer);
-        rental.setReturnDate(rentalDate);
+        Rental rental = new Rental(ID, item, customerId);
 
         if (obj.containsKey("returnDate")) {
             Date returnDate = null;
             try {
                 returnDate = dateFormat.parse((String) obj.get("returnDate"));
-            } catch (java.text.ParseException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
             }
             rental.setReturnDate(returnDate);
         }
